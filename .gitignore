@@ -1,10 +1,14 @@
 # IntelliJ
 .idea/
 out/
+*.iml
 
 # Gradle
 .gradle/
 build/
+
+# Config
+src/main/resources/application.properties
 
 # Compiled class file
 *.class
