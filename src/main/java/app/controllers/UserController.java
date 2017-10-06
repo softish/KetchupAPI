@@ -2,6 +2,7 @@ package app.controllers;
 
 import app.domain.User;
 import app.model.UserDTO;
+import app.model.AuthenticatedUserDTO;
 import app.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,21 +23,21 @@ public class UserController {
     private UserRepository userRepository;
 
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST, consumes={"application/json"})
-    public ResponseEntity<UserDTO> authenticated(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<AuthenticatedUserDTO> authenticate(@RequestBody UserDTO userDTO) {
         if(userDTO == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
         User u = userRepository.findByUsername(userDTO.getUserName());
         if(u == null) {
-            return new ResponseEntity<>(userDTO, HttpStatus.CONFLICT);
+            return new ResponseEntity<>(new AuthenticatedUserDTO(-1, ""), HttpStatus.NOT_FOUND);
         }
 
         if(authenticated(userDTO, u)) {
-            return new ResponseEntity<>(new UserDTO(u.getId(), u.getUsername()), HttpStatus.OK);
+            return new ResponseEntity<>(new AuthenticatedUserDTO(u.getId(), u.getUsername()), HttpStatus.OK);
         }
 
-        return new ResponseEntity<>(userDTO, HttpStatus.OK);
+        return new ResponseEntity<>(new AuthenticatedUserDTO(u.getId(), u.getUsername()), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST, consumes={"application/json"})
