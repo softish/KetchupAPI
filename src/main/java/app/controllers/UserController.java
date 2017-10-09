@@ -24,7 +24,7 @@ public class UserController {
 
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST, consumes={"application/json"})
     public ResponseEntity<AuthenticatedUserDTO> authenticate(@RequestBody UserDTO userDTO) {
-        if(userDTO == null) {
+        if(userDTO == null || isEmpty(userDTO)) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
@@ -42,7 +42,7 @@ public class UserController {
 
     @RequestMapping(value = "/register", method = RequestMethod.POST, consumes={"application/json"})
     public ResponseEntity<UserDTO> register(@RequestBody UserDTO userDTO) {
-        if(userDTO == null) {
+        if(userDTO == null || isEmpty(userDTO)) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
@@ -59,5 +59,9 @@ public class UserController {
 
     private boolean authenticated(UserDTO requestingUser, User storedUser) {
         return requestingUser.getUserName().equals(storedUser.getUsername()) && requestingUser.getPassword().equals(storedUser.getPassword());
+    }
+
+    private boolean isEmpty(UserDTO userDTO) {
+        return userDTO.getPassword().trim().equals("") || userDTO.getPassword().trim().equals("");
     }
 }
