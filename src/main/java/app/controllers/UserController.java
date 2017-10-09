@@ -52,9 +52,9 @@ public class UserController {
             User user = new User(userDTO.getUserName(), userDTO.getPassword());
             userRepository.save(user);
             return new ResponseEntity<>(userDTO, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(userDTO, HttpStatus.CONFLICT);
         }
-
-        return new ResponseEntity<>(userDTO, HttpStatus.OK);
     }
 
     private boolean authenticated(UserDTO requestingUser, User storedUser) {
