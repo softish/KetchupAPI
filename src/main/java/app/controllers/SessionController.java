@@ -33,7 +33,7 @@ public class SessionController {
         }
 
         User user = userRepository.findOne(timedSessionDTO.getUserId());
-        TimedSession timedSession = new TimedSession(user, timedSessionDTO.getDuration());
+        TimedSession timedSession = new TimedSession(user, timedSessionDTO.getDuration(), timedSessionDTO.getTask());
         timedSessionRepository.save(timedSession);
 
         return null;

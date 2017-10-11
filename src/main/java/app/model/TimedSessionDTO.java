@@ -10,12 +10,15 @@ public class TimedSessionDTO {
 
     private long userId;
     private long duration;
+    private String task;
 
     @JsonCreator
     public TimedSessionDTO(@JsonProperty("userId") long userId,
-                           @JsonProperty("duration") long duration) {
+                           @JsonProperty("duration") long duration,
+                           @JsonProperty("task") String task) {
         this.userId = userId;
         this.duration = duration;
+        this.task = task;
     }
 
     public long getUserId() {
@@ -32,5 +35,13 @@ public class TimedSessionDTO {
 
     public void setDuration(long duration) {
         this.duration = duration;
+    }
+
+    public String getTask() {
+        return task;
+    }
+
+    public void setTask(String task) {
+        this.task = task;
     }
 }

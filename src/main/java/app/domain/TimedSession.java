@@ -19,6 +19,8 @@ public class TimedSession {
 
     private long duration;
 
+    private String task;
+
     protected TimedSession() {
 
     }
@@ -26,6 +28,12 @@ public class TimedSession {
     public TimedSession(User user, long duration) {
         this.user = user;
         this.duration = duration;
+    }
+
+    public TimedSession(User user, long duration, String task) {
+        this.user = user;
+        this.duration = duration;
+        this.task = task;
     }
 
     public Long getId() {
@@ -50,5 +58,13 @@ public class TimedSession {
 
     public void setDuration(long duration) {
         this.duration = duration;
+    }
+
+    public String getTask() {
+        return task;
+    }
+
+    public void setTask(String task) {
+        this.task = task;
     }
 }
