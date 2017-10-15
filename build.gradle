@@ -16,6 +16,11 @@ apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 
 jar {
+    manifest {
+        attributes(
+                'Main-Class': 'app.Application'
+        )
+    }
     baseName = 'KetchupAPI'
     version =  '0.1.0'
 }
@@ -41,8 +46,6 @@ dependencies {
     // tag::tests[]
     testCompile("org.springframework.boot:spring-boot-starter-test")
     // end::tests[]
-    //testCompile group: 'junit', name: 'junit', version: '4.12'
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '1.5.7.RELEASE'
-    compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.6'
-
+    compile("org.springframework.boot:spring-boot-starter-data-jpa")
+    compile("mysql:mysql-connector-java:5.1.6")
 }
