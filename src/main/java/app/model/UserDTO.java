@@ -12,9 +12,9 @@ public class UserDTO {
     private String password;
 
     @JsonCreator
-    public UserDTO(@JsonProperty("userName")String userName,
+    public UserDTO(@JsonProperty("username")String username,
                    @JsonProperty("password")String password) {
-        this.userName = userName;
+        this.userName = username;
         this.password = password;
     }
 
@@ -32,5 +32,13 @@ public class UserDTO {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return "UserDTO{" +
+                "username='" + userName + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 }

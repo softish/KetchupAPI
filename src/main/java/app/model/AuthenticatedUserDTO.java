@@ -13,9 +13,9 @@ public class AuthenticatedUserDTO {
 
     @JsonCreator
     public AuthenticatedUserDTO(@JsonProperty("id") long id,
-                                @JsonProperty("userName")String userName) {
+                                @JsonProperty("username")String username) {
         this.id = id;
-        this.userName = userName;
+        this.userName = username;
     }
 
     public long getId() {

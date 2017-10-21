@@ -37,7 +37,7 @@ public class UserController {
             return new ResponseEntity<>(new AuthenticatedUserDTO(u.getId(), u.getUsername()), HttpStatus.OK);
         }
 
-        return new ResponseEntity<>(new AuthenticatedUserDTO(u.getId(), u.getUsername()), HttpStatus.OK);
+        return new ResponseEntity<>(new AuthenticatedUserDTO(-1, ""), HttpStatus.NOT_FOUND);
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST, consumes={"application/json"})
