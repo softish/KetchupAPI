@@ -23,6 +23,7 @@ public class Application {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/").allowedOrigins("http://localhost:4200");
                 registry.addMapping("/user/authenticate").allowedOrigins("http://localhost:4200");
+                registry.addMapping("/session/getLatest").allowedOrigins("*");
             }
         };
     }

@@ -28,7 +28,7 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        User u = userRepository.findByUsername(userDTO.getUserName());
+        User u = userRepository.findByUsername(userDTO.getUsername());
         if(u == null) {
             return new ResponseEntity<>(new AuthenticatedUserDTO(-1, ""), HttpStatus.NOT_FOUND);
         }
@@ -46,10 +46,10 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        User u = userRepository.findByUsername(userDTO.getUserName());
+        User u = userRepository.findByUsername(userDTO.getUsername());
 
         if(u == null) {
-            User user = new User(userDTO.getUserName(), userDTO.getPassword());
+            User user = new User(userDTO.getUsername(), userDTO.getPassword());
             userRepository.save(user);
             return new ResponseEntity<>(userDTO, HttpStatus.OK);
         } else {
@@ -58,7 +58,7 @@ public class UserController {
     }
 
     private boolean authenticated(UserDTO requestingUser, User storedUser) {
-        return requestingUser.getUserName().equals(storedUser.getUsername()) && requestingUser.getPassword().equals(storedUser.getPassword());
+        return requestingUser.getUsername().equals(storedUser.getUsername()) && requestingUser.getPassword().equals(storedUser.getPassword());
     }
 
     private boolean isEmpty(UserDTO userDTO) {

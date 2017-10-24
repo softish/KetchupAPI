@@ -9,13 +9,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class AuthenticatedUserDTO {
 
     private long id;
-    private String userName;
+    private String username;
 
     @JsonCreator
     public AuthenticatedUserDTO(@JsonProperty("id") long id,
                                 @JsonProperty("username")String username) {
         this.id = id;
-        this.userName = username;
+        this.username = username;
     }
 
     public long getId() {
@@ -26,11 +26,11 @@ public class AuthenticatedUserDTO {
         this.id = id;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 }
