@@ -36,7 +36,7 @@ public class SessionController {
         }
 
         User user = userRepository.findOne(timedSessionDTO.getUserId());
-        TimedSession timedSession = new TimedSession(user, timedSessionDTO.getDuration(), timedSessionDTO.getTask());
+        TimedSession timedSession = new TimedSession(user, timedSessionDTO.getDuration(), timedSessionDTO.getTask(), timedSessionDTO.getEndDateTime());
         timedSessionRepository.save(timedSession);
 
         return null;
@@ -51,7 +51,7 @@ public class SessionController {
         List<TimedSession> timedSessions = timedSessionRepository.findByUserId(authenticatedUserDTO.getId());
         if(timedSessions != null && timedSessions.size() > 0) {
             TimedSession timedSession = timedSessions.get(timedSessions.size() - 1);
-            TimedSessionDTO timedSessionDTO = new TimedSessionDTO(timedSession.getUser().getId(), millisToMinutes(timedSession.getDuration()), timedSession.getTask());
+            TimedSessionDTO timedSessionDTO = new TimedSessionDTO(timedSession.getUser().getId(), millisToMinutes(timedSession.getDuration()), timedSession.getTask(), timedSession.getEndDateTime());
             return new ResponseEntity<>(timedSessionDTO, HttpStatus.OK);
         }
 

@@ -1,6 +1,7 @@
 package app.domain;
 
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * Created by softish on 2017-10-04.
@@ -19,6 +20,9 @@ public class TimedSession {
 
     private long duration;
 
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date endDateTime;
+
     private String task;
 
     protected TimedSession() {
@@ -30,10 +34,11 @@ public class TimedSession {
         this.duration = duration;
     }
 
-    public TimedSession(User user, long duration, String task) {
+    public TimedSession(User user, long duration, String task, Date endDateTime) {
         this.user = user;
         this.duration = duration;
         this.task = task;
+        this.endDateTime = endDateTime;
     }
 
     public Long getId() {
@@ -66,5 +71,13 @@ public class TimedSession {
 
     public void setTask(String task) {
         this.task = task;
+    }
+
+    public Date getEndDateTime() {
+        return this.endDateTime;
+    }
+
+    public void setEndDateTime(Date endDateTime) {
+        this.endDateTime = endDateTime;
     }
 }

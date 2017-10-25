@@ -62,4 +62,14 @@ public class User {
     public void setTimedSessions(List<TimedSession> timedSessions) {
         this.timedSessions = timedSessions;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", timedSessions=" + timedSessions +
+                '}';
+    }
 }
