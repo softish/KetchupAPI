@@ -42,9 +42,10 @@ dependencies {
     // tag::actuator[]
     compile("org.springframework.boot:spring-boot-starter-actuator")
     // end::actuator[]
-    testCompile("junit:junit")
     // tag::tests[]
+    testCompile("junit:junit")
     testCompile("org.springframework.boot:spring-boot-starter-test")
+    testCompile group: 'com.h2database', name: 'h2', version: '1.4.196'
     // end::tests[]
     compile("org.springframework.boot:spring-boot-starter-data-jpa")
     compile("mysql:mysql-connector-java:5.1.6")
