@@ -3,6 +3,7 @@ package app.controllers;
 import app.domain.TimedSession;
 import app.domain.User;
 import app.model.AuthenticatedUserDTO;
+import app.model.SessionRangeDTO;
 import app.model.TimedSessionDTO;
 import app.repositories.TimedSessionRepository;
 import app.repositories.UserRepository;
@@ -14,6 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -58,7 +64,33 @@ public class SessionController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    @RequestMapping(value = "/getRange", method = RequestMethod.POST, consumes = {"application/json"})
+    public ResponseEntity<List<TimedSessionDTO>> getRangeOfSessions(@RequestBody SessionRangeDTO sessionRangeDTO) {
+        if (sessionRangeDTO == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        User user = userRepository.findOne(sessionRangeDTO.getUserId());
+        List<TimedSession> timedSessions = timedSessionRepository.getRange(user, sessionRangeDTO.getEndOfRangeDate());
+
+        if (timedSessions != null && timedSessions.size() > 0) {
+            return new ResponseEntity<>(convertToDTOList(timedSessions), HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
     private long millisToMinutes(long millis) {
         return millis / (60 * 1000);
+    }
+
+    private List<TimedSessionDTO> convertToDTOList(List<TimedSession> timedSessions) {
+        List<TimedSessionDTO> timedSessionDTOs = new ArrayList<>();
+
+        for (TimedSession timedSession : timedSessions) {
+            timedSessionDTOs.add(new TimedSessionDTO(timedSession.getUser().getId(), millisToMinutes(timedSession.getDuration()), timedSession.getTask(), timedSession.getEndDateTime()));
+        }
+
+        return timedSessionDTOs;
     }
 }
