@@ -22,6 +22,26 @@ and specify the datasource credentials for the following properties:
 ### Running in development environment
 Run the main method in class `app.Application`.
 
+### Running *jar*
+Package the project according to [packaging](./README.md#packaging).
+
+Run with `java -jar KetchupAPI-<version-number>.jar`
+
+### Running with docker
+Package the project according to [packaging](./README.md#packaging).
+
+Build image with `docker build -t <image-name> .` from the project root.
+
+Run `docker run <image-name>`. 
+Options can be added after `run`.
+
+To redirect the port, use the option `-p hostPort:containerPort` where *containerPort* is set to 8080 in the [Dockerfile](./Dockerfile).
+
+To detach container from terminal use the option `-d`.
+
+If the container does not stop on `ctrl+c`, run `docker ps` and `docker stop <CONTAINER ID>`.
+
 ### Packaging
 To package `jar`, run gradle task `gradle bootRepackage`. 
+The output is available under the `/build/libs/` directory.
 
