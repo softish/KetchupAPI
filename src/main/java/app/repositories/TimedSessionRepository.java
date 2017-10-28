@@ -1,8 +1,8 @@
 package app.repositories;
 
 import app.domain.TimedSession;
+import app.domain.TimedSessionStatistic;
 import app.domain.User;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -18,4 +18,9 @@ public interface TimedSessionRepository extends CrudRepository<TimedSession, Lon
 
     @Query("SELECT ts FROM TimedSession ts WHERE ts.user = :user and ts.endDateTime >= :endOfRangeDate")
     List<TimedSession> getRange(@Param("user") User user, @Param("endOfRangeDate") Date endOfRangeDate);
+
+    @Query("SELECT new app.domain.TimedSessionStatistic(ts.user, ts.endDateTime, SUM(ts.duration)) " +
+            "FROM TimedSession ts WHERE ts.user = :user and ts.endDateTime >= :endOfRangeDate " +
+            "group by substring(ts.endDateTime, 1, 10)")
+    List<TimedSessionStatistic> getCountInRange(@Param("user") User user, @Param("endOfRangeDate") Date endOfRangeDate);
 }
