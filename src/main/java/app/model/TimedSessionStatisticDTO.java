@@ -6,16 +6,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Created by softish on 2017-10-28.
  */
-public class TimedSessionStatisticsDTO {
+public class TimedSessionStatisticDTO {
 
     private long userId;
     private String date;
     private long totalDuration;
 
     @JsonCreator
-    public TimedSessionStatisticsDTO(@JsonProperty("userId") long userId,
-                                     @JsonProperty("date") String date,
-                                     @JsonProperty("totalDuration") long totalDuration) {
+    public TimedSessionStatisticDTO(@JsonProperty("userId") long userId,
+                                    @JsonProperty("date") String date,
+                                    @JsonProperty("totalDuration") long totalDuration) {
         this.userId = userId;
         this.date = date;
         this.totalDuration = totalDuration;

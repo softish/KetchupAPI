@@ -25,7 +25,7 @@ Run the main method in class `app.Application`.
 Program argument `--port=<some-port>` may be supplied to override the default 
 port specified in [application-base.properties](./src/main/resources/application-base.properties).
 More information about the subject can be found 
-[here](https://docs.spring.io/spring-boot/docs/current/reference/html/howto-properties-and-configuration.html);
+[here](https://docs.spring.io/spring-boot/docs/current/reference/html/howto-properties-and-configuration.html).
 
 ### Running *jar*
 Package the project according to [packaging](./README.md#packaging).

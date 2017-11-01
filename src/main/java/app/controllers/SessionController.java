@@ -6,7 +6,7 @@ import app.domain.User;
 import app.model.AuthenticatedUserDTO;
 import app.model.SessionRangeDTO;
 import app.model.TimedSessionDTO;
-import app.model.TimedSessionStatisticsDTO;
+import app.model.TimedSessionStatisticDTO;
 import app.repositories.TimedSessionRepository;
 import app.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -66,7 +67,7 @@ public class SessionController {
     }
 
     @RequestMapping(value = "/getRange", method = RequestMethod.POST, consumes = {"application/json"})
-    public ResponseEntity<List<TimedSessionStatisticsDTO>> getRangeOfSessions(@RequestBody SessionRangeDTO sessionRangeDTO) {
+    public ResponseEntity<List<TimedSessionStatisticDTO>> getRangeOfSessions(@RequestBody SessionRangeDTO sessionRangeDTO) {
         if (sessionRangeDTO == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -75,16 +76,17 @@ public class SessionController {
         List<TimedSessionStatistic> timedSessionStatistics = timedSessionRepository.getCountInRange(user, sessionRangeDTO.getEndOfRangeDate());
 
         if (timedSessionStatistics != null && timedSessionStatistics.size() > 0) {
-            List<TimedSessionStatisticsDTO> timedSessionStatisticsDTOs = new ArrayList<>();
+            List<TimedSessionStatisticDTO> timedSessionStatisticDTOS = new ArrayList<>();
 
             for (TimedSessionStatistic timedSessionStatistic: timedSessionStatistics) {
-                timedSessionStatisticsDTOs.add(new TimedSessionStatisticsDTO(
+                timedSessionStatisticDTOS.add(new TimedSessionStatisticDTO(
                         timedSessionStatistic.getUser().getId(),
                         timedSessionStatistic.getEndDateTime().toString().substring(0, 10),
                         millisToMinutes(timedSessionStatistic.getTotalDuration())));
             }
 
-            return new ResponseEntity<>(timedSessionStatisticsDTOs, HttpStatus.OK);
+            timedSessionStatisticDTOS = padDates(timedSessionStatisticDTOS, sessionRangeDTO);
+            return new ResponseEntity<>(timedSessionStatisticDTOS, HttpStatus.OK);
         }
 
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -102,5 +104,31 @@ public class SessionController {
         }
 
         return timedSessionDTOs;
+    }
+
+    private List<TimedSessionStatisticDTO> padDates(List<TimedSessionStatisticDTO> timedSessionStatisticDTOs, SessionRangeDTO sessionRangeDTO) {
+        List<TimedSessionStatisticDTO> paddedResult = new ArrayList<>();
+        LocalDate dateInRange = sessionRangeDTO.getEndOfRangeDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+        int i = 0;
+        while(i < timedSessionStatisticDTOs.size()) {
+            LocalDate dateInResultSet = LocalDate.parse(timedSessionStatisticDTOs.get(i).getDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+            if (dateInRange.compareTo(dateInResultSet) < 0) {
+                paddedResult.add(new TimedSessionStatisticDTO(sessionRangeDTO.getUserId(), dateInRange.toString(), 0));
+            } else if (dateInRange.compareTo(dateInResultSet) == 0) {
+                paddedResult.add(timedSessionStatisticDTOs.get(i));
+                i++;
+            }
+
+            dateInRange = dateInRange.plusDays(1);
+        }
+
+        while (dateInRange.compareTo(LocalDate.now()) <= 0) {
+            paddedResult.add(new TimedSessionStatisticDTO(sessionRangeDTO.getUserId(), dateInRange.toString(), 0));
+            dateInRange = dateInRange.plusDays(1);
+        }
+
+        return paddedResult;
     }
 }
