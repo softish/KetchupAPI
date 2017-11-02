@@ -7,6 +7,8 @@ import app.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -49,7 +51,7 @@ public class UserController {
         User u = userRepository.findByUsername(userDTO.getUsername());
 
         if(u == null) {
-            User user = new User(userDTO.getUsername(), userDTO.getPassword());
+            User user = new User(userDTO.getUsername(), hash(userDTO.getPassword()));
             userRepository.save(user);
             return new ResponseEntity<>(userDTO, HttpStatus.OK);
         } else {
@@ -58,10 +60,14 @@ public class UserController {
     }
 
     private boolean authenticated(UserDTO requestingUser, User storedUser) {
-        return requestingUser.getUsername().equals(storedUser.getUsername()) && requestingUser.getPassword().equals(storedUser.getPassword());
+        return requestingUser.getUsername().equals(storedUser.getUsername()) && BCrypt.checkpw(requestingUser.getPassword(), storedUser.getPassword());
     }
 
     private boolean isEmpty(UserDTO userDTO) {
         return userDTO.getPassword().trim().equals("") || userDTO.getPassword().trim().equals("");
+    }
+
+    private String hash(String string) {
+        return new BCryptPasswordEncoder().encode(string);
     }
 }
