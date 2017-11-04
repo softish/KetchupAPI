@@ -89,7 +89,7 @@ public class SessionController {
             return new ResponseEntity<>(timedSessionStatisticDTOS, HttpStatus.OK);
         }
 
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(padDates(new ArrayList<>(), sessionRangeDTO), HttpStatus.OK);
     }
 
     private long millisToMinutes(long millis) {
