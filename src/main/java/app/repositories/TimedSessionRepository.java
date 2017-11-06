@@ -1,5 +1,6 @@
 package app.repositories;
 
+import app.domain.Statistic;
 import app.domain.TimedSession;
 import app.domain.TimedSessionStatistic;
 import app.domain.User;
@@ -23,4 +24,9 @@ public interface TimedSessionRepository extends CrudRepository<TimedSession, Lon
             "FROM TimedSession ts WHERE ts.user = :user and ts.endDateTime >= :endOfRangeDate " +
             "group by substring(ts.endDateTime, 1, 10)")
     List<TimedSessionStatistic> getCountInRange(@Param("user") User user, @Param("endOfRangeDate") Date endOfRangeDate);
+
+    @Query("SELECT new app.domain.Statistic(ts.user, ts.endDateTime, SUM(ts.duration), ts.task) " +
+            "FROM TimedSession ts WHERE ts.user = :user and ts.endDateTime >= :endOfRangeDate " +
+            "group by substring(ts.endDateTime, 1, 10), ts.task")
+    List<Statistic> getStatisticsInRange(@Param("user") User user, @Param("endOfRangeDate") Date endOfRangeDate);
 }

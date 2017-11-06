@@ -1,12 +1,10 @@
 package app.controllers;
 
+import app.domain.Statistic;
 import app.domain.TimedSession;
 import app.domain.TimedSessionStatistic;
 import app.domain.User;
-import app.model.AuthenticatedUserDTO;
-import app.model.SessionRangeDTO;
-import app.model.TimedSessionDTO;
-import app.model.TimedSessionStatisticDTO;
+import app.model.*;
 import app.repositories.TimedSessionRepository;
 import app.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,15 +90,30 @@ public class SessionController {
         return new ResponseEntity<>(padDates(new ArrayList<>(), sessionRangeDTO), HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/getDetailedRange", method = RequestMethod.POST, consumes = {"application/json"})
+    public ResponseEntity<List<StatisticDTO>> getDetailedRangeOfSessions(@RequestBody SessionRangeDTO sessionRangeDTO) {
+        if (sessionRangeDTO == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        User user = userRepository.findOne(sessionRangeDTO.getUserId());
+        List<Statistic> statistics = timedSessionRepository.getStatisticsInRange(user, sessionRangeDTO.getEndOfRangeDate());
+
+        return new ResponseEntity<>(convertToDTOList(statistics), HttpStatus.NOT_FOUND);
+    }
+
     private long millisToMinutes(long millis) {
         return millis / (60 * 1000);
     }
 
-    private List<TimedSessionDTO> convertToDTOList(List<TimedSession> timedSessions) {
-        List<TimedSessionDTO> timedSessionDTOs = new ArrayList<>();
+    private List<StatisticDTO> convertToDTOList(List<Statistic> statistics) {
+        List<StatisticDTO> timedSessionDTOs = new ArrayList<>();
 
-        for (TimedSession timedSession : timedSessions) {
-            timedSessionDTOs.add(new TimedSessionDTO(timedSession.getUser().getId(), millisToMinutes(timedSession.getDuration()), timedSession.getTask(), timedSession.getEndDateTime()));
+        for (Statistic statistic : statistics) {
+            timedSessionDTOs.add(new StatisticDTO(statistic.getUser().getId(),
+                    statistic.getEndDateTime().toString().substring(0,10),
+                    millisToMinutes(statistic.getTotalDuration()),
+                    statistic.getTask()));
         }
 
         return timedSessionDTOs;
