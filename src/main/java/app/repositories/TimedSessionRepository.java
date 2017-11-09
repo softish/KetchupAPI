@@ -29,4 +29,9 @@ public interface TimedSessionRepository extends CrudRepository<TimedSession, Lon
             "FROM TimedSession ts WHERE ts.user = :user and ts.endDateTime >= :endOfRangeDate " +
             "group by substring(ts.endDateTime, 1, 10), ts.task")
     List<Statistic> getStatisticsInRange(@Param("user") User user, @Param("endOfRangeDate") Date endOfRangeDate);
+
+    @Query("SELECT new app.domain.Statistic(ts.user, ts.endDateTime, SUM(ts.duration), ts.task) " +
+            "FROM TimedSession ts WHERE ts.user = :user and substring(ts.endDateTime, 1, 10) = :date " +
+            "group by substring(ts.endDateTime, 1, 10), ts.task")
+    List<Statistic> getStatisticsForDate(@Param("user") User user, @Param("date") String date);
 }

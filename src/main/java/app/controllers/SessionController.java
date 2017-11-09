@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -100,6 +101,24 @@ public class SessionController {
         List<Statistic> statistics = timedSessionRepository.getStatisticsInRange(user, sessionRangeDTO.getEndOfRangeDate());
 
         return new ResponseEntity<>(convertToDTOList(statistics), HttpStatus.NOT_FOUND);
+    }
+
+    @RequestMapping(value = "/getDetailedForDate", method = RequestMethod.POST, consumes = {"application/json"})
+    public ResponseEntity<List<StatisticDTO>> getDetailedBreakdownForDate(@RequestBody SessionRangeDTO sessionRangeDTO) {
+        if (sessionRangeDTO == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        User user = userRepository.findOne(sessionRangeDTO.getUserId());
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String date = simpleDateFormat.format(sessionRangeDTO.getEndOfRangeDate());
+        List<Statistic> statistics = timedSessionRepository.getStatisticsForDate(user, date);
+
+        if(statistics.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(convertToDTOList(statistics), HttpStatus.OK);
     }
 
     private long millisToMinutes(long millis) {
