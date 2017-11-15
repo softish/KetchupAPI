@@ -80,4 +80,15 @@ public class TimedSession {
     public void setEndDateTime(Date endDateTime) {
         this.endDateTime = endDateTime;
     }
+
+    @Override
+    public String toString() {
+        return "TimedSession{" +
+                "id=" + id +
+                ", user=" + user +
+                ", duration=" + duration +
+                ", endDateTime=" + endDateTime +
+                ", task='" + task + '\'' +
+                '}';
+    }
 }

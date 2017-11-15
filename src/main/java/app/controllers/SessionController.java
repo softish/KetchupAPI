@@ -20,11 +20,10 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
- * Created by softish on 2017-10-04.
+ * This class exposes and manages session related actions.
  */
 @RestController
 @RequestMapping("/session")

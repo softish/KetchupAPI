@@ -1,8 +1,8 @@
 package app.controllers;
 
 import app.domain.User;
-import app.model.UserDTO;
 import app.model.AuthenticatedUserDTO;
+import app.model.UserDTO;
 import app.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Created by softish on 2017-10-05.
+ * This controller manages user related actions.
  */
 @RestController
 @RequestMapping("/user")

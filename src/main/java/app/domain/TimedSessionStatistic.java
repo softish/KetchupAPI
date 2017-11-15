@@ -40,4 +40,13 @@ public class TimedSessionStatistic {
     public void setTotalDuration(long totalDuration) {
         this.totalDuration = totalDuration;
     }
+
+    @Override
+    public String toString() {
+        return "TimedSessionStatistic{" +
+                "user=" + user +
+                ", endDateTime=" + endDateTime +
+                ", totalDuration=" + totalDuration +
+                '}';
+    }
 }
