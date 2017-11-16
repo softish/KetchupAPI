@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Created by softish on 2017-10-28.
+ * Domain Transfer Object representation of aggregated sessions.
  */
 public class TimedSessionStatisticDTO {
 

@@ -6,6 +6,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Date;
 
+/**
+ * Domain Transfer Object representation of a time range.
+ */
 public class SessionRangeDTO {
 
     private long userId;

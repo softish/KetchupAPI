@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Created by softish on 2017-10-05.
+ * Domain Transfer Object representation of a authenticated user.
  */
 public class AuthenticatedUserDTO {
 
@@ -13,7 +13,7 @@ public class AuthenticatedUserDTO {
 
     @JsonCreator
     public AuthenticatedUserDTO(@JsonProperty("id") long id,
-                                @JsonProperty("username")String username) {
+                                @JsonProperty("username") String username) {
         this.id = id;
         this.username = username;
     }

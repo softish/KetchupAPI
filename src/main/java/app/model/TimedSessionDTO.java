@@ -7,7 +7,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
 
 /**
- * Created by softish on 2017-10-04.
+ * Domain Transfer Object representation of a session that
+ * was recorded by a client.
  */
 public class TimedSessionDTO {
 

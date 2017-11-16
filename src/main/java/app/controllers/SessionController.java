@@ -35,9 +35,9 @@ public class SessionController {
     @Autowired
     private UserRepository userRepository;
 
-    @RequestMapping(value = "/save", method = RequestMethod.POST, consumes={"application/json"})
+    @RequestMapping(value = "/save", method = RequestMethod.POST, consumes = {"application/json"})
     public ResponseEntity<TimedSessionDTO> saveSession(@RequestBody TimedSessionDTO timedSessionDTO) {
-        if(timedSessionDTO == null) {
+        if (timedSessionDTO == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
@@ -48,14 +48,14 @@ public class SessionController {
         return null;
     }
 
-    @RequestMapping(value = "/getLatest", method = RequestMethod.POST, consumes={"application/json"})
+    @RequestMapping(value = "/getLatest", method = RequestMethod.POST, consumes = {"application/json"})
     public ResponseEntity<TimedSessionDTO> getLatestSession(@RequestBody AuthenticatedUserDTO authenticatedUserDTO) {
-        if(authenticatedUserDTO == null) {
+        if (authenticatedUserDTO == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
         List<TimedSession> timedSessions = timedSessionRepository.findByUserId(authenticatedUserDTO.getId());
-        if(timedSessions != null && timedSessions.size() > 0) {
+        if (timedSessions != null && timedSessions.size() > 0) {
             TimedSession timedSession = timedSessions.get(timedSessions.size() - 1);
             TimedSessionDTO timedSessionDTO = new TimedSessionDTO(timedSession.getUser().getId(), millisToMinutes(timedSession.getDuration()), timedSession.getTask(), timedSession.getEndDateTime());
             return new ResponseEntity<>(timedSessionDTO, HttpStatus.OK);
@@ -76,7 +76,7 @@ public class SessionController {
         if (timedSessionStatistics != null && timedSessionStatistics.size() > 0) {
             List<TimedSessionStatisticDTO> timedSessionStatisticDTOS = new ArrayList<>();
 
-            for (TimedSessionStatistic timedSessionStatistic: timedSessionStatistics) {
+            for (TimedSessionStatistic timedSessionStatistic : timedSessionStatistics) {
                 timedSessionStatisticDTOS.add(new TimedSessionStatisticDTO(
                         timedSessionStatistic.getUser().getId(),
                         timedSessionStatistic.getEndDateTime().toString().substring(0, 10),
@@ -113,7 +113,7 @@ public class SessionController {
         String date = simpleDateFormat.format(sessionRangeDTO.getEndOfRangeDate());
         List<Statistic> statistics = timedSessionRepository.getStatisticsForDate(user, date);
 
-        if(statistics.isEmpty()) {
+        if (statistics.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
@@ -129,7 +129,7 @@ public class SessionController {
 
         for (Statistic statistic : statistics) {
             timedSessionDTOs.add(new StatisticDTO(statistic.getUser().getId(),
-                    statistic.getEndDateTime().toString().substring(0,10),
+                    statistic.getEndDateTime().toString().substring(0, 10),
                     millisToMinutes(statistic.getTotalDuration()),
                     statistic.getTask()));
         }
@@ -142,7 +142,7 @@ public class SessionController {
         LocalDate dateInRange = sessionRangeDTO.getEndOfRangeDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
         int i = 0;
-        while(i < timedSessionStatisticDTOs.size()) {
+        while (i < timedSessionStatisticDTOs.size()) {
             LocalDate dateInResultSet = LocalDate.parse(timedSessionStatisticDTOs.get(i).getDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
             if (dateInRange.compareTo(dateInResultSet) < 0) {

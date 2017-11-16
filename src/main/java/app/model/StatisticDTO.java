@@ -15,9 +15,9 @@ public class StatisticDTO {
 
     @JsonCreator
     public StatisticDTO(@JsonProperty("userId") long userId,
-                                    @JsonProperty("date") String date,
-                                    @JsonProperty("totalDuration") long totalDuration,
-                                    @JsonProperty("task") String task) {
+                        @JsonProperty("date") String date,
+                        @JsonProperty("totalDuration") long totalDuration,
+                        @JsonProperty("task") String task) {
         this.userId = userId;
         this.date = date;
         this.totalDuration = totalDuration;

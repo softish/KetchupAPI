@@ -24,33 +24,33 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
-    @RequestMapping(value = "/authenticate", method = RequestMethod.POST, consumes={"application/json"})
+    @RequestMapping(value = "/authenticate", method = RequestMethod.POST, consumes = {"application/json"})
     public ResponseEntity<AuthenticatedUserDTO> authenticate(@RequestBody UserDTO userDTO) {
-        if(userDTO == null || isEmpty(userDTO)) {
+        if (userDTO == null || isEmpty(userDTO)) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
         User u = userRepository.findByUsername(userDTO.getUsername());
-        if(u == null) {
+        if (u == null) {
             return new ResponseEntity<>(new AuthenticatedUserDTO(-1, ""), HttpStatus.NOT_FOUND);
         }
 
-        if(authenticated(userDTO, u)) {
+        if (authenticated(userDTO, u)) {
             return new ResponseEntity<>(new AuthenticatedUserDTO(u.getId(), u.getUsername()), HttpStatus.OK);
         }
 
         return new ResponseEntity<>(new AuthenticatedUserDTO(-1, ""), HttpStatus.NOT_FOUND);
     }
 
-    @RequestMapping(value = "/register", method = RequestMethod.POST, consumes={"application/json"})
+    @RequestMapping(value = "/register", method = RequestMethod.POST, consumes = {"application/json"})
     public ResponseEntity<UserDTO> register(@RequestBody UserDTO userDTO) {
-        if(userDTO == null || isEmpty(userDTO)) {
+        if (userDTO == null || isEmpty(userDTO)) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
         User u = userRepository.findByUsername(userDTO.getUsername());
 
-        if(u == null) {
+        if (u == null) {
             User user = new User(userDTO.getUsername(), hash(userDTO.getPassword()));
             userRepository.save(user);
             return new ResponseEntity<>(userDTO, HttpStatus.OK);
