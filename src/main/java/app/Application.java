@@ -28,6 +28,7 @@ public class Application {
                 registry.addMapping("/user/authenticate").allowedOrigins("*");
                 registry.addMapping("/session/getLatest").allowedOrigins("*");
                 registry.addMapping("/session/getRange").allowedOrigins("*");
+                registry.addMapping("/session/getDetailedRange").allowedOrigins("*");
                 registry.addMapping("/session/getDetailedForDate").allowedOrigins("*");
             }
         };
