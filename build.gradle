@@ -52,4 +52,7 @@ dependencies {
     compile group: 'org.springframework.security', name: 'spring-security-core', version: '4.2.3.RELEASE'
     compile group: 'org.springframework.security', name: 'spring-security-config', version: '4.2.3.RELEASE'
     compile group: 'org.springframework.security', name: 'spring-security-web', version: '4.2.3.RELEASE'
+    
+    // https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api
+    compile group: 'javax.xml.bind', name: 'jaxb-api', version: '2.4.0-b180830.0359'
 }
